@@ -8,6 +8,7 @@
     "lib": "lib",
     "test": "test"
   },
+  "bundleDependencies": false,
   "dependencies": {
     "handlebars": "~4.0.5",
     "handlebars-layouts": "~1.1.0",

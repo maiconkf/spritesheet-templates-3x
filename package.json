@@ -45,5 +45,17 @@
   "bugs": {
     "url": "https://github.com/maiconkf/spritesheet-templates-3x/issues"
   },
+  "keywords": [
+    "json",
+    "css",
+    "sass",
+    "scss",
+    "stylus",
+    "less",
+    "sprite",
+    "spritesheet",
+    "template",
+    "format"
+  ],
   "homepage": "https://github.com/maiconkf/spritesheet-templates-3x#readme"
 }

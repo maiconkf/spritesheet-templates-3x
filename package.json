@@ -1,6 +1,6 @@
 {
   "name": "spritesheet-templates-3x",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convert spritesheet data into CSS or CSS pre-processor data, support @3x",
   "main": "index.js",
   "directories": {

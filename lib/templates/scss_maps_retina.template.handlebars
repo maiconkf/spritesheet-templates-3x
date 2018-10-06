@@ -63,14 +63,21 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
   background-size: map-get($sprite, '{{strings.bare_total_width}}') map-get($sprite, '{{strings.bare_total_height}}');
 }
 
-@mixin retina-sprite($retina-group) {
+@mixin retina-sprite($retina-group, $retina3x-group) {
   $normal-sprite: map-get($retina-group, '{{strings.bare_normal}}');
   $retina-sprite: map-get($retina-group, '{{strings.bare_retina}}');
+  $retina3x-sprite: map-get($retina3x-group, '{{strings.bare_retina}}');
   @include sprite($normal-sprite);
 
   @media (-webkit-min-device-pixel-ratio: 2),
          (min-resolution: 192dpi) {
     @include sprite-image($retina-sprite);
+    @include sprite-background-size($normal-sprite);
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 3),
+         (min-resolution: 288dpi) {
+    @include sprite-image($retina3x-sprite);
     @include sprite-background-size($normal-sprite);
   }
 }
@@ -84,11 +91,11 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
 //   This yields the same output as CSS retina template but can be overridden in SCSS
 //
 // @include retina-sprites($retina-groups);
-@mixin retina-sprites($retina-groups) {
+@mixin retina-sprites($retina-groups, $retina3x-groups) {
   @each $retina-group in $retina-groups {
     $sprite-name: map-get($retina-group, '{{strings.bare_name}}');
     .#{$sprite-name} {
-      @include retina-sprite($retina-group);
+      @include retina-sprite($retina-group, $retina3x-groups);
     }
   }
 }

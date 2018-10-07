@@ -19,6 +19,19 @@
 @{{strings.name_image}}: '{{{escaped_image}}}';
 @{{strings.name}}: {{px.x}} {{px.y}} {{px.offset_x}} {{px.offset_y}} {{px.width}} {{px.height}} {{px.total_width}} {{px.total_height}} '{{{escaped_image}}}' '{{name}}';
 {{/each}}
+{{#each retina3x_sprites}}
+@{{strings.name_name}}: '{{name}}';
+@{{strings.name_x}}: {{px.x}};
+@{{strings.name_y}}: {{px.y}};
+@{{strings.name_offset_x}}: {{px.offset_x}};
+@{{strings.name_offset_y}}: {{px.offset_y}};
+@{{strings.name_width}}: {{px.width}};
+@{{strings.name_height}}: {{px.height}};
+@{{strings.name_total_width}}: {{px.total_width}};
+@{{strings.name_total_height}}: {{px.total_height}};
+@{{strings.name_image}}: '{{{escaped_image}}}';
+@{{strings.name}}: {{px.x}} {{px.y}} {{px.offset_x}} {{px.offset_y}} {{px.width}} {{px.height}} {{px.total_width}} {{px.total_height}} '{{{escaped_image}}}' '{{name}}';
+{{/each}}
 {{/content}}
 {{#content "spritesheet" mode="append"}}
 @{{retina_spritesheet_info.strings.name_width}}: {{retina_spritesheet.px.width}};
@@ -26,6 +39,12 @@
 @{{retina_spritesheet_info.strings.name_image}}: '{{{retina_spritesheet.escaped_image}}}';
 @{{retina_spritesheet_info.strings.name_sprites}}:{{#each retina_sprites}} @{{strings.name}}{{/each}};
 @{{retina_spritesheet_info.strings.name}}: {{retina_spritesheet.px.width}} {{retina_spritesheet.px.height}} '{{{retina_spritesheet.escaped_image}}}' @{{retina_spritesheet_info.strings.name_sprites}};
+
+@{{retina3x_spritesheet_info.strings.name_width}}: {{retina3x_spritesheet.px.width}};
+@{{retina3x_spritesheet_info.strings.name_height}}: {{retina3x_spritesheet.px.height}};
+@{{retina3x_spritesheet_info.strings.name_image}}: '{{{retina_spritesheet.escaped_image}}}';
+@{{retina3x_spritesheet_info.strings.name_sprites}}:{{#each retina_sprites}} @{{strings.name}}{{/each}};
+@{{retina3x_spritesheet_info.strings.name}}: {{retina3x_spritesheet.px.width}} {{retina3x_spritesheet.px.height}} '{{{retina3x_spritesheet.escaped_image}}}' @{{retina3x_spritesheet_info.strings.name_sprites}};
 
 /*
 These "retina group" variables are mappings for the naming and pairing of normal and retina sprites.
@@ -37,6 +56,12 @@ The list formatted variables are intended for mixins like `retina-sprite` and `r
 @{{strings.name_group}}: '{{name}}' @{{normal.strings.name}} @{{retina.strings.name}};
 {{/each}}
 @{{retina_groups_info.strings.name}}:{{#each retina_groups}} @{{strings.name_group}}{{/each}};
+
+{{#each retina3x_groups}}
+@{{strings.name_group_name}}: '{{name}}';
+@{{strings.name_group}}-3x: '{{name}}' @{{normal.strings.name}} @{{retina.strings.name}};
+{{/each}}
+@{{retina_groups_info.strings.name}}-3x:{{#each retina_groups}} @{{strings.name_group}}-3x{{/each}};
 {{/content}}
 
 {{#content "sprite-functions" mode="append"}}
@@ -60,14 +85,21 @@ The media query is from CSS Tricks: https://css-tricks.com/snippets/css/retina-d
   background-size: @sprite-total-width @sprite-total-height;
 }
 
-.retina-sprite(@retina-group) {
+.retina-sprite(@retina-group, @retina3x-group) {
   @normal-sprite: extract(@retina-group, 2);
   @retina-sprite: extract(@retina-group, 3);
+  @retina3x-sprite: extract(@retina3x-group, 3);
   .sprite(@normal-sprite);
 
   @media (-webkit-min-device-pixel-ratio: 2),
          (min-resolution: 192dpi) {
     .sprite-image(@retina-sprite);
+    .sprite-background-size(@normal-sprite);
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 3),
+         (min-resolution: 288dpi) {
+    .sprite-image(@retina3x-sprite);
     .sprite-background-size(@normal-sprite);
   }
 }
@@ -83,13 +115,14 @@ The `.retina-sprites` mixin generates a CSS rule and media query for retina grou
 
 .retina-sprites(@retina-groups);
 */
-.retina-sprites(@retina-groups, @i: 1) when (@i <= length(@retina-groups)) {
+.retina-sprites(@retina-groups, @retina3x-groups, @i: 1) when (@i <= length(@retina-groups)) {
   @retina-group: extract(@retina-groups, @i);
+  @retina3x-group: extract(@retina3x-groups, @i);
   @sprite-name: e(extract(@retina-group, 1));
   .@{sprite-name} {
-    .retina-sprite(@retina-group);
+    .retina-sprite(@retina-group, @retina3x-group);
   }
-  .retina-sprites(@retina-groups, @i + 1);
+  .retina-sprites(@retina-groups, @retina3x-group, @i + 1);
 }
 {{/if}}
 {{/content}}

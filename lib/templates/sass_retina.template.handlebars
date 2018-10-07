@@ -71,9 +71,10 @@ ${{retina_groups_info.strings.name}}-3x: ({{#each retina3x_groups}}${{strings.na
 // The media query is from CSS Tricks: https://css-tricks.com/snippets/css/retina-display-media-query/
 //
 // $icon-home-group: ('icon-home', $icon-home, $icon-home-2x, )
+// $icon-home-group-3x: ('icon-home', $icon-home, $icon-home-3xx, )
 //
 // .icon-home
-//   @include retina-sprite($icon-home-group)
+//   @include retina-sprite($icon-home-group, $icon-home-group-3x)
 @mixin sprite-background-size($sprite)
   $sprite-total-width: nth($sprite, 7)
   $sprite-total-height: nth($sprite, 8)
